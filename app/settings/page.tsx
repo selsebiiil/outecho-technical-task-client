@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { signOut } from "next-auth/react"; // Assuming you use next-auth
+
 import ConfirmationModal from "../ui/ConfirmationModal";
 import ChangePasswordForm from "../ui/user/ChangePasswordForm";
 import { useDeleteUserMutation } from "../hooks/users/deleteUser";
+
+import { getSession, signOut } from "next-auth/react";
 
 const SettingsPage = () => {
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
@@ -16,15 +18,8 @@ const SettingsPage = () => {
 
   const handleDeleteAccount = async () => {
     setIsLoading(true);
-    try {
-      deleteUser();
 
-      signOut({ callbackUrl: "/" });
-    } catch (error) {
-      console.error("Error deleting account:", error);
-    } finally {
-      setIsLoading(false);
-    }
+    handleLogout();
   };
 
   const handleOpenDeleteConfirmation = () => {

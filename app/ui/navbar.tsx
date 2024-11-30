@@ -1,6 +1,6 @@
 "use client";
 
-import { getSession, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState, useRef } from "react";
 export default function Navbar() {
@@ -14,15 +14,8 @@ export default function Navbar() {
 
   return (
     <nav className=" sticky top-0 w-full  flex items-center justify-between p-4 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 shadow-lg border-b border-gray-500 z-20">
-      {/* Logo Image - Wrapped in Link for Navigation */}
       <div className="flex items-center">
         <Link href="/">
-          {/* <img
-            src="/logo.svg" // Replace this with your logo image path
-            alt="Outecho Logo"
-            className="h-8 cursor-pointer"
-            onClick={() => setIsDropdownOpen(false)} // Close dropdown when logo is clicked
-          /> */}
           <h1 className="text-4xl font-extrabold text-center">
             {" "}
             <span className="text-yellow-300">BotTalk</span>
@@ -36,7 +29,7 @@ export default function Navbar() {
             {/* Avatar Image */}
             <button onClick={toggleDropdown} className="focus:outline-none">
               <img
-                src={session.user?.avatarUrl || "/default-avatar.png"} // Fallback to a default image if avatarUrl is not provided
+                src={session.user?.avatarUrl || "/globe.svg"}
                 alt="User Avatar"
                 className="w-10 h-10 rounded-full border-2 border-gray-300 "
               />

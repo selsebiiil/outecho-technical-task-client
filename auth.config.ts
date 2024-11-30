@@ -1,29 +1,27 @@
 import type { NextAuthConfig } from "next-auth";
 import axios from "axios";
-import { redirect } from "next/navigation";
+import { signOut } from "@/auth";
 
 const API_BASE_URL = `${process.env.API_URL}`;
 export const authConfig = {
   pages: {
     signIn: "/login",
   },
-  providers: [
-    // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
-    // while this file is also used in non-Node.js environments
-  ],
+  providers: [],
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
-      const isOnProfile = nextUrl.pathname.startsWith("/profile"); // Check if the page is the profile page
       const isOnLogin = nextUrl.pathname.startsWith("/login");
-      if (isOnDashboard) {
-        // Allow access to dashboard for both logged-in and non-logged-in users
-        return true;
-      } else if (isOnProfile && !isLoggedIn) {
+      const isOnSettings = nextUrl.pathname.startsWith("/settings");
+      const isOnSignup = nextUrl.pathname.startsWith("/signup");
+      const isOnProtectedRoutes =
+        nextUrl.pathname.startsWith("/settings") ||
+        nextUrl.pathname.startsWith("/my-topics");
+
+      if (isOnProtectedRoutes && !isLoggedIn) {
         // Redirect unauthenticated users trying to access the profile page
-        return true;
-      } else if (isOnLogin && isLoggedIn) {
+        return false;
+      } else if ((isOnLogin && isLoggedIn) || (isOnSignup && isLoggedIn)) {
         return Response.redirect(new URL("/", nextUrl));
       }
 
@@ -47,7 +45,7 @@ export const authConfig = {
             },
           });
 
-          session.user = { ...response.data, token: token }; // Assuming backend returns full user data
+          session.user = { ...response.data, token: token };
         } catch (error) {
           console.error("Error fetching user info:", error);
         }

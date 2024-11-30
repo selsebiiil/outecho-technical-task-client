@@ -13,25 +13,22 @@ interface UserData {
 
 const createUser = async ({ data }: { data: UserData }) => {
   const response = await apiClient.post(`/user`, {
-    ...data, // Pass topicId and content from the `data` parameter
+    ...data,
   });
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useCreateUserMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  return useMutation<any, Error, { data: UserData }>(
-    createUser, // Pass the mutation function directly
-    {
-      onSuccess: async (data) => {
-        router.push("/login");
-        toast.success("User created successfully!");
-      },
-      onError: (error) => {
-        toast.error("Error creating user");
-      },
-    }
-  );
+  return useMutation<any, Error, { data: UserData }>(createUser, {
+    onSuccess: async (data) => {
+      router.push("/login");
+      toast.success("User created successfully!");
+    },
+    onError: (error) => {
+      toast.error("Error creating user");
+    },
+  });
 };

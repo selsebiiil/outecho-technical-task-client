@@ -21,16 +21,16 @@ const likeOrDislikeComment = async ({
   }
 
   const response = await apiClient.post(`/comments/${id}/like`, {
-    ...data, // Pass topicId and content from the `data` parameter
+    ...data,
   });
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useLikeOrDislikeCommentMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<any, Error, { id: number; data: CommentData }>(
-    likeOrDislikeComment, // Pass the mutation function directly
+    likeOrDislikeComment,
     {
       onSuccess: async (data) => {
         await queryClient.invalidateQueries(commentKeys.getAll());

@@ -35,7 +35,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 Authorization: `Bearer ${access_token}`,
               },
             });
-
+            if (!userResponse) {
+              return null;
+            }
             // Step 3: Return the full user object (including access_token and other user details)
             return {
               access_token,
@@ -45,7 +47,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           return null; // If no access_token is returned, return null
         } catch (error) {
-          console.error("Error during authentication:", error);
           return null;
         }
       },

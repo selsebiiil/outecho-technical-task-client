@@ -10,32 +10,28 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import TopicModal from "./TopicModal";
-import ConfirmationModal from "./../ConfirmationModal"; // Adjust the import path based on where your modal is located
+import ConfirmationModal from "./../ConfirmationModal";
 import { useCreateTopicMutation } from "@/app/hooks/topics/createTopic";
-import { useRouter } from "next/navigation";
+
 import { useDeleteTopicMutation } from "@/app/hooks/topics/deleteTopic";
 
 const TopicsPage = () => {
-  const [page, setPage] = useState(1); // Start from the first page
-  const pageSize = 20; // Set the number of topics to fetch per page
-  const router = useRouter();
-  const [allTopics, setAllTopics] = useState<Topic[]>([]); // Store all fetched topics
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [page, setPage] = useState(1);
+  const pageSize = 20;
+  const [allTopics, setAllTopics] = useState<Topic[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTopic, setEditingTopic] = useState<Topic | null>(null);
-  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false); // State to control the confirmation modal
-  const [topicToDelete, setTopicToDelete] = useState<number | null>(null); // Store the topic being deleted
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [topicToDelete, setTopicToDelete] = useState<number | null>(null);
   const { mutate: createTopic, isLoading: isPosting } =
     useCreateTopicMutation();
   const { mutate: deleteTopic } = useDeleteTopicMutation();
 
-  //   const { mutate: deleteTopic } = useDeleteCommentMutation();
-
   const { data, error, isLoading, isFetching, refetch } = useMyTopics(
     page,
     pageSize
-  ); // Fetch topics data
+  );
 
-  // Append new topics to allTopics when data changes
   useEffect(() => {
     if (data?.data) {
       setAllTopics((prevTopics) => {
@@ -48,47 +44,43 @@ const TopicsPage = () => {
   }, [data]);
 
   const handleLoadMore = () => {
-    setPage((prevPage) => prevPage + 1); // Increment page number
+    setPage((prevPage) => prevPage + 1);
   };
   const handleCreate = () => {
-    setEditingTopic(null); // Ensure no topic is set for editing
+    setEditingTopic(null);
     setIsModalOpen(true);
   };
 
   const handleEdit = (topic: Topic) => {
-    setEditingTopic(topic); // Set the topic to edit
+    setEditingTopic(topic);
     setIsModalOpen(true);
   };
   const handleDelete = (topicId: number) => {
-    setTopicToDelete(topicId); // Store the topic to delete
-    setIsConfirmationModalOpen(true); // Open the confirmation modal
+    setTopicToDelete(topicId);
+    setIsConfirmationModalOpen(true);
   };
   const handleDeleteConfirm = () => {
     if (topicToDelete) {
-      // Perform the delete operation (e.g., call your API to delete the topic)
       deleteTopic({ id: topicToDelete as number });
-      // After deletion, close the confirmation modal
+
       setIsConfirmationModalOpen(false);
-      setTopicToDelete(null); // Reset the topic to delete
+      setTopicToDelete(null);
     }
   };
 
   const handleSave = (title: string, category: string, description: string) => {
     if (editingTopic) {
-      // Save the edited topic (you can update your API here)
       createTopic({
         id: editingTopic.id as number,
         data: { title, category, description },
       });
-      refetch();
     } else {
       createTopic({
         id: 0,
         data: { title, category, description },
       });
-      refetch();
-      // Create a new topic (you can call an API here to save it)
     }
+    refetch();
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -96,7 +88,6 @@ const TopicsPage = () => {
 
   return (
     <div className="space-y-6 p-8">
-      {/* Create New Topic Button */}
       <div className="flex justify-end mb-4">
         <button
           onClick={handleCreate}
@@ -109,7 +100,7 @@ const TopicsPage = () => {
       {allTopics.map((topic: Topic) => (
         <div key={topic.id} className="flex flex-col sm:flex-row">
           <TopicCard key={topic.id} topic={topic} />
-          {/* Edit and Delete Buttons */}
+
           <div className="flex sm:flex-col space-x-4 sm:space-x-0 sm:space-y-2 sm:ml-4 mt-4 sm:mt-0  justify-evenly">
             <button
               onClick={() => handleEdit(topic)}
@@ -128,12 +119,12 @@ const TopicsPage = () => {
           </div>
         </div>
       ))}
-      {/* Load More Button */}
-      {data?.count > page * pageSize && ( // Show button if more topics are available
+
+      {data?.count > page * pageSize && (
         <div className="flex justify-center mt-6">
           <button
             onClick={handleLoadMore}
-            disabled={isFetching} // Disable while fetching
+            disabled={isFetching}
             className="px-6 py-2 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-600 disabled:bg-gray-400 transition duration-200"
           >
             {isFetching ? "Loading more..." : "Load More"}

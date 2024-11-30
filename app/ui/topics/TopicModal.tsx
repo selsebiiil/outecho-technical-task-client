@@ -18,7 +18,6 @@ type ModalProps = {
   initialData?: { title: string; category: string; description: string };
 };
 
-// Zod schema for validation
 const topicSchema = z.object({
   title: z.string().min(1, "Title is required"),
   category: z.enum(

@@ -15,7 +15,6 @@ import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCreateUserMutation } from "../../hooks/users/createUser";
-import { Toast } from "../toast";
 
 const Schema = z.object({
   firstName: z.string().optional(), // Optional, but if provided, it can't be empty
@@ -61,7 +60,7 @@ const SignInForm = () => {
       gender: (gender as "FEMALE") || "MALE",
     };
     createUser({ data: data });
-    <Toast message="Successfully created user" onClose={() => {}}></Toast>;
+
     // You can now use formAction to authenticate, for example:
     // formAction.mutate({ firstName, lastName, email, password, gender });
   };

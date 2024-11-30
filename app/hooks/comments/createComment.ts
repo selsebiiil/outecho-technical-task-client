@@ -22,16 +22,16 @@ const createOrUpdateComment = async ({
   }
 
   const response = await apiClient.post(`/comments/${id}`, {
-    ...data, // Pass topicId and content from the `data` parameter
+    ...data,
   });
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useCreateMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<any, Error, { id: number; data: CommentData }>(
-    createOrUpdateComment, // Pass the mutation function directly
+    createOrUpdateComment,
     {
       onSuccess: async (data) => {
         await queryClient.invalidateQueries(commentKeys.getAll());

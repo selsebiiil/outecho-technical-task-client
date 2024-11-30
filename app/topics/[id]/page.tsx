@@ -7,6 +7,7 @@ export default async function TopicDetail({
   params: Promise<{ id: number }>;
 }) {
   const id = (await params).id;
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/topics/${id}`);
 
   if (!res.ok) {

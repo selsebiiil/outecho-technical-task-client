@@ -12,13 +12,14 @@ const fetchComments = async ({ id }: FetchCommentParams) => {
     `/comments/all/${id}?userId=${session?.user?.id}`,
     {}
   );
-  return response.data; // Assuming the response contains topics data
+  return response.data;
 };
 
 export const useComments = (id: number) => {
   return useQuery(
-    ["COMMENTS", id], // Query key with pagination parameters
-    () => fetchComments({ id }), // Query function
+    ["COMMENTS", id],
+    () => fetchComments({ id }),
+
     {
       onSuccess: (data) => {
         console.log("Data fetched successfully:", data);
@@ -26,8 +27,8 @@ export const useComments = (id: number) => {
       onError: (error) => {
         console.error("Error fetching topics:", error);
       },
-      enabled: true, // You can conditionally enable or disable the query based on certain conditions
-      keepPreviousData: true, // Keep previous data while new data is being fetched
+      enabled: true,
+      keepPreviousData: true,
     }
   );
 };

@@ -13,21 +13,18 @@ const deleteTopic = async ({ id }: { id: number }) => {
 
   const response = await apiClient.delete(`/topics/${id}`);
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useDeleteTopicMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation<any, Error, { id: number }>(
-    deleteTopic, // Pass the mutation function directly
-    {
-      onSuccess: async (data) => {
-        await queryClient.invalidateQueries(topicsKeys.getMyTopics(20, 1));
-        toast.success("Topic deleted successfully!");
-      },
-      onError: (error) => {
-        toast.error("Error while deleting topic!");
-      },
-    }
-  );
+  return useMutation<any, Error, { id: number }>(deleteTopic, {
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries(topicsKeys.getMyTopics(20, 1));
+      toast.success("Topic deleted successfully!");
+    },
+    onError: (error) => {
+      toast.error("Error while deleting topic!");
+    },
+  });
 };

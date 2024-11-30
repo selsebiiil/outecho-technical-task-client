@@ -1,33 +1,27 @@
 import { useMutation, useQueryClient } from "react-query";
 import { apiClient } from "../../lib/api";
-import { getSession } from "next-auth/react";
-import { signOut } from "@/auth";
+
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { signOutCallback } from "@/app/lib/actions";
 
 const deleteUser = async () => {
-  const session = await getSession();
+  const response = await apiClient.delete(`/user`);
 
-  if (!session?.user?.id) {
-    throw new Error("User is not authenticated");
-  }
-
-  const response = await apiClient.delete(`/user}`);
-
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useDeleteUserMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation<any, Error>(
-    deleteUser, // Pass the mutation function directly
-    {
-      onSuccess: async (data) => {
-        await signOut();
-        toast.success("Account deleted successfully!");
-      },
-      onError: (error) => {
-        toast.error("Error while deleting user!");
-      },
-    }
-  );
+  const router = useRouter();
+  return useMutation<any, Error>(deleteUser, {
+    onSuccess: async (data) => {
+      toast.success("Account deleted successfully!");
+      signOutCallback();
+      router.push("/");
+    },
+    onError: (error) => {
+      toast.error("Error while deleting user!");
+    },
+  });
 };

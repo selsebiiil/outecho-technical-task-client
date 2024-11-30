@@ -13,10 +13,10 @@ interface UserData {
 
 const updateUser = async ({ data }: { data: UserData }) => {
   const response = await apiClient.put("/user", {
-    ...data, // Pass topicId and content from the `data` parameter
+    ...data,
   });
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useUpdateUserMutation = () => {

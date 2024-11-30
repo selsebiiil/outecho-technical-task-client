@@ -21,13 +21,13 @@ const fetchMyTopics = async ({ page, pageSize }: FetchTopicsParams) => {
       userId: session?.user?.id,
     },
   });
-  return response.data; // Assuming the response contains topics data
+  return response.data;
 };
 
 export const useMyTopics = (page: number, pageSize: number) => {
   return useQuery(
-    ["MY_TOPICS", page, pageSize], // Query key with pagination parameters
-    () => fetchMyTopics({ page, pageSize }), // Query function
+    ["MY_TOPICS", page, pageSize],
+    () => fetchMyTopics({ page, pageSize }),
     {
       onSuccess: (data) => {
         console.log("Data fetched successfully:", data);
@@ -35,8 +35,7 @@ export const useMyTopics = (page: number, pageSize: number) => {
       onError: (error) => {
         console.error("Error fetching topics:", error);
       },
-      enabled: true, // You can conditionally enable or disable the query based on certain conditions
-      keepPreviousData: true, // Keep previous data while new data is being fetched
+      enabled: true,
     }
   );
 };

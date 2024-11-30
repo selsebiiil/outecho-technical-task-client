@@ -12,20 +12,17 @@ const deleteComment = async ({ id }: { id: number }) => {
 
   const response = await apiClient.delete(`/comments/${id}`);
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useDeleteCommentMutation = () => {
   const queryClient = useQueryClient();
-  return useMutation<any, Error, { id: number }>(
-    deleteComment, // Pass the mutation function directly
-    {
-      onSuccess: async (data) => {
-        await queryClient.invalidateQueries(commentKeys.getAll());
-      },
-      onError: (error) => {
-        console.error("Error deleting comment:", error);
-      },
-    }
-  );
+  return useMutation<any, Error, { id: number }>(deleteComment, {
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries(commentKeys.getAll());
+    },
+    onError: (error) => {
+      console.error("Error deleting comment:", error);
+    },
+  });
 };

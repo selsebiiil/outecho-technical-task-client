@@ -9,7 +9,7 @@ import {
   HandThumbDownIcon,
   TrashIcon,
   PencilIcon,
-} from "@heroicons/react/24/outline"; // Assuming you are using Heroicons
+} from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
 import ConfirmationModal from "../ConfirmationModal";
@@ -44,12 +44,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ topicId }) => {
   };
 
   const handlePostComment = async () => {
-    if (!comment.trim()) return; // Avoid posting empty comments
+    if (!comment.trim()) return;
 
     try {
       const data = { topicId, content: comment };
-      await postComment({ id: 0, data });
-      setComment(""); // Reset input after posting
+      postComment({ id: 0, data });
+      setComment("");
     } catch (error) {
       console.error("Error posting comment:", error);
     }
@@ -59,28 +59,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({ topicId }) => {
     id: number,
     likeStatus: "LIKE" | "DISLIKE"
   ) => {
-    if (!session) return; // Ensure user is logged in
+    if (!session) return;
     try {
-      await mutateLikeDislike({ id, data: { likeStatus } });
+      mutateLikeDislike({ id, data: { likeStatus } });
     } catch (error) {
       console.error(`Error handling like/dislike for comment ${id}:`, error);
     }
   };
 
   const handleDelete = (commentId: number) => {
-    setEditingCommentId(commentId); // Close any edit modal
-    setIsModalOpen(true); // Open confirmation modal
+    setEditingCommentId(commentId);
+    setIsModalOpen(true);
   };
 
   const confirmDelete = async () => {
-    // Logic to delete comment goes here
     try {
-      await deleteComment({ id: editingCommentId as number });
+      deleteComment({ id: editingCommentId as number });
     } catch (error) {
       console.error(`Error deleting  comment ${editingCommentId}:`, error);
     }
-    setIsModalOpen(false); // Close the modal after confirming
-    setEditingCommentId(null); // Close any edit modal
+    setIsModalOpen(false);
+    setEditingCommentId(null);
   };
 
   const handleEdit = (commentId: number, currentContent: string) => {

@@ -170,7 +170,6 @@ const EditProfile: React.FC<EditProfileProps> = ({ user, onClose }) => {
               <p className="text-sm text-red-500">{errors.gender}</p>
             )}
           </div>
-          {/* Display mutation error if exists */}
           {mutationError && (
             <p className="text-sm text-red-500">{mutationError}</p>
           )}

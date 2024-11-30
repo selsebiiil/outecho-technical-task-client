@@ -7,7 +7,6 @@ import TopUsers from "./ui/topics/TopUsers";
 const HomePage = () => {
   return (
     <div>
-      {/* Title Section */}
       {/* Banner Section */}
       <div className="bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 text-white p-6 mb-8">
         <h1 className="text-4xl font-extrabold text-center">

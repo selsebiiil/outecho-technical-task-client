@@ -5,7 +5,6 @@ import { useState } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import EditProfile from "./EditProfile";
 import { useSession } from "next-auth/react";
-import { useUpdateUserMutation } from "@/app/hooks/users/updateUser";
 
 interface UserDetailsProps {
   user: User;

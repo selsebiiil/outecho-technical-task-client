@@ -1,18 +1,14 @@
 import { useMutation, useQueryClient } from "react-query";
 import { apiClient } from "../../lib/api";
 import { getSession } from "next-auth/react";
-import { topicsKeys } from "./topicsKeys";
-import { Categories } from "@/app/lib/definitions";
+import { customRevalidateTag } from "@/app/lib/actions";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
 interface TopicData {
-  title: string;
-  description: string;
-  category: string;
+  likeStatus: "LIKE" | "DISLIKE";
 }
 
-const createOrUpdateTopic = async ({
+const likeOrDislikeTopic = async ({
   id,
   data,
 }: {
@@ -25,26 +21,25 @@ const createOrUpdateTopic = async ({
     throw new Error("User is not authenticated");
   }
 
-  const response = await apiClient.post(`/topics/${id}`, {
+  const response = await apiClient.post(`/topics/${id}/like`, {
     ...data,
   });
 
   return response.data;
 };
 
-export const useCreateTopicMutation = () => {
+export const useLikeOrDislikeTopicMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
   return useMutation<any, Error, { id: number; data: TopicData }>(
-    createOrUpdateTopic,
+    likeOrDislikeTopic,
     {
-      onSuccess: async (data) => {
-        await queryClient.invalidateQueries(topicsKeys.getMyTopics(20, 1));
-        toast.success("Topic saved successfully!");
-        router.refresh();
+      onSuccess: async (data, { id }) => {
+        customRevalidateTag(id);
+        router.push(`/topics/${id}`);
       },
       onError: (error) => {
-        toast.error("Error creating/updating topic");
+        console.error("Error liking/disliking topic:", error);
       },
     }
   );

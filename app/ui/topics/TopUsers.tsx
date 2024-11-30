@@ -3,12 +3,13 @@ import { useTopUsers } from "@/app/hooks/topics/topUsers";
 import { User } from "@/app/lib/definitions";
 import React from "react";
 import { useRouter } from "next/navigation";
+import TopUsersSkeleton from "../skeletons";
 
 const TopUsers: React.FC = () => {
   const router = useRouter();
-  const { data, error, isLoading } = useTopUsers(); // Fetch topics data
+  const { data, error, isLoading } = useTopUsers();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <TopUsersSkeleton />;
   if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   return (
@@ -19,7 +20,7 @@ const TopUsers: React.FC = () => {
           {data?.map((user: User) => (
             <div
               key={user.id}
-              onClick={() => router.push(`/profile/${user.id}`)} // Navigate to the user's profile
+              onClick={() => router.push(`/profile/${user.id}`)}
               className="bg-white p-4 rounded-lg shadow-md flex items-center cursor-pointer hover:bg-gray-200 transition"
             >
               <img

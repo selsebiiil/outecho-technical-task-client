@@ -12,21 +12,18 @@ interface PasswordData {
 
 const changePassword = async ({ data }: { data: PasswordData }) => {
   const response = await apiClient.post(`/user/change-password`, {
-    ...data, // Pass topicId and content from the `data` parameter
+    ...data,
   });
 
-  return response.data; // Assuming the API returns the created/updated comment
+  return response.data;
 };
 
 export const useChangePasswordMutation = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  return useMutation<any, Error, { data: PasswordData }>(
-    changePassword, // Pass the mutation function directly
-    {
-      onSuccess: async (data) => {
-        toast.success("Password changed successfully!");
-      },
-    }
-  );
+  return useMutation<any, Error, { data: PasswordData }>(changePassword, {
+    onSuccess: async (data) => {
+      toast.success("Password changed successfully!");
+    },
+  });
 };

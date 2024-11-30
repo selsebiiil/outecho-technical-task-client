@@ -50,10 +50,8 @@ const ChangePasswordForm = () => {
     e.preventDefault();
 
     try {
-      // Validate the form data using Zod
       formSchema.parse(formData);
 
-      // If validation passes, reset errors
       setErrors({});
 
       changePassword(
@@ -76,7 +74,6 @@ const ChangePasswordForm = () => {
         }
       );
     } catch (err) {
-      // Catch Zod validation errors
       if (err instanceof z.ZodError) {
         const fieldErrors = err.errors.reduce((acc, curr) => {
           if (curr.path[0]) {
@@ -142,7 +139,7 @@ const ChangePasswordForm = () => {
             <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
           )}
         </div>
-        {/* Display mutation error if exists */}
+
         {mutationError && (
           <p className="text-sm text-red-500">{mutationError}</p>
         )}

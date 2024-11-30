@@ -1,44 +1,45 @@
-"use client"; // components/HotTopics.tsx
+"use client";
 import { useHotTopics } from "@/app/hooks/topics/useHotTopics";
 import { Topic } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
-import React from "react";
-import Slider from "react-slick"; // Import the slider component from react-slick
+import React, { Suspense } from "react";
+import Slider from "react-slick";
+import { SliderSkeleton } from "../skeletons";
 
 const HotTopics: React.FC = () => {
   const { data, error, isLoading, isFetching } = useHotTopics(); // Fetch topics data
   const router = useRouter();
-  if (isLoading) return <div>Loading...</div>;
-  if (error instanceof Error) return <div>Error: {error.message}</div>;
 
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3, // Show 3 topics at a time
+    slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 5000, // Speed up autoplay for smoother experience
-    centerMode: true, // Centers the active slide
-    focusOnSelect: true, // Focuses on selected slide
+    autoplaySpeed: 5000,
+    centerMode: true,
+    focusOnSelect: true,
     responsive: [
       {
-        breakpoint: 1024, // When the screen width is 1024px or less
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 2, // Show 2 topics at a time
+          slidesToShow: 2,
         },
       },
       {
-        breakpoint: 768, // When the screen width is 768px or less
+        breakpoint: 768,
         settings: {
-          slidesToShow: 1, // Show 1 topic at a time
+          slidesToShow: 1,
         },
       },
     ],
   };
   const handleTopicClick = (topicId: number) => {
-    router.push(`/topics/${topicId}`); // Navigate to the topic page using its ID
+    router.push(`/topics/${topicId}`);
   };
+  if (isLoading) return <SliderSkeleton />;
+  if (error instanceof Error) return <div>Error: {error.message}</div>;
   return (
     <div className="bg-gradient-to-r from-gray-700 via-gray-800 to-gray-900 text-white p-6  shadow-lg cursor-pointer">
       <h2 className="text-2xl font-bold mb-6 text-center">Hot Topics</h2>

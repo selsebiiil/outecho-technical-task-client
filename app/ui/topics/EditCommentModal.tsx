@@ -17,10 +17,9 @@ const EditCommentModal: React.FC<EditCommentModalProps> = ({
 }) => {
   const [editedComment, setEditedComment] = useState(currentContent);
 
-  // Sync state with the currentContent prop when it changes
   useEffect(() => {
     setEditedComment(currentContent);
-  }, [currentContent]); // Runs when currentContent changes
+  }, [currentContent]);
 
   const handleSave = () => {
     if (editedComment?.trim()) {
