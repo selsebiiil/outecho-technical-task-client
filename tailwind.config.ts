@@ -1,6 +1,6 @@
 import type { Config } from "tailwindcss";
 
-export default {
+const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,11 +8,25 @@ export default {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        "13": "repeat(13, minmax(0, 1fr))",
+      },
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        blue: {
+          400: "#2589FE",
+          500: "#0070F3",
+          600: "#2F6FEB",
+        },
+      },
+    },
+    keyframes: {
+      shimmer: {
+        "100%": {
+          transform: "translateX(100%)",
+        },
       },
     },
   },
-  plugins: [],
-} satisfies Config;
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/line-clamp")],
+};
+export default config;

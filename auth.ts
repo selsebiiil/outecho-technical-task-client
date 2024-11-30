@@ -29,6 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           if (access_token) {
             // Step 2: If access_token is returned, use it to fetch user data
+
             const userResponse = await axios.get(`${API_BASE_URL}/user/me`, {
               headers: {
                 Authorization: `Bearer ${access_token}`,

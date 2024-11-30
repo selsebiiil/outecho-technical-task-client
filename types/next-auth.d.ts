@@ -7,6 +7,10 @@ declare module "next-auth" {
     access_token: string;
     id: string;
     email: string;
+    firstName: string;
+    lastName: string;
+    avatarUrl: string;
+    token: { access_token: string };
   }
 
   interface Session {
