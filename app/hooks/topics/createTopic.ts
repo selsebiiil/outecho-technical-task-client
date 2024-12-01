@@ -5,6 +5,7 @@ import { topicsKeys } from "./topicsKeys";
 import { Categories } from "@/app/lib/definitions";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { revalidateTagCustom } from "@/app/lib/actions";
 
 interface TopicData {
   title: string;
@@ -41,6 +42,7 @@ export const useCreateTopicMutation = () => {
       onSuccess: async (data) => {
         await queryClient.invalidateQueries(topicsKeys.getMyTopics());
         toast.success("Topic saved successfully!");
+        revalidateTagCustom("MY_TOPICS");
         router.refresh();
       },
       onError: (error) => {

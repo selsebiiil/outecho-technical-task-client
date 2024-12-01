@@ -10,7 +10,9 @@ const TopicsPage = async ({
 }) => {
   const page = parseInt(searchParams?.page || "1", 10);
   const pageSize = 20;
-  const response = await fetch(`${process.env.API_URL}/topics/all`);
+  const response = await fetch(`${process.env.API_URL}/topics/all`, {
+    next: { tags: ["MY_TOPICS"] },
+  });
   const { data: topics, count } = await response.json();
 
   return (

@@ -3,6 +3,7 @@ import { apiClient } from "../../lib/api";
 import { getSession } from "next-auth/react";
 import { topicsKeys } from "./topicsKeys";
 import { toast } from "react-toastify";
+import { revalidateTagCustom } from "@/app/lib/actions";
 
 const deleteTopic = async ({ id }: { id: number }) => {
   const session = await getSession();
@@ -21,6 +22,7 @@ export const useDeleteTopicMutation = () => {
   return useMutation<any, Error, { id: number }>(deleteTopic, {
     onSuccess: async (data) => {
       await queryClient.invalidateQueries(topicsKeys.getMyTopics());
+      revalidateTagCustom("MY_TOPICS");
       toast.success("Topic deleted successfully!");
     },
     onError: (error) => {

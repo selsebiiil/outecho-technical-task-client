@@ -4,10 +4,13 @@ import React, { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import TopUsersSkeleton from "../skeletons";
 import Link from "next/link";
+import { revalidateTag } from "next/cache";
 
 // Fetch data on the server
 const fetchTopUsers = async (): Promise<User[]> => {
-  const response = await fetch(`${process.env.API_URL}/user/top-commenters`);
+  const response = await fetch(`${process.env.API_URL}/user/top-commenters`, {
+    next: { tags: ["TOP_USERS"] },
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch top users");

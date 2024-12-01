@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { apiClient } from "../../lib/api";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { revalidateTagCustom } from "@/app/lib/actions";
 
 interface UserData {
   firstName: string | null;
@@ -26,6 +27,7 @@ export const useCreateUserMutation = () => {
     onSuccess: async (data) => {
       router.push("/login");
       toast.success("User created successfully!");
+      revalidateTagCustom("TOP_USERS");
     },
     onError: (error) => {
       toast.error("Error creating user");

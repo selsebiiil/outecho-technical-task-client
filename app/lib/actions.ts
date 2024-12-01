@@ -3,7 +3,7 @@
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
 import { signOut } from "next-auth/react";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function authenticate(
@@ -34,4 +34,8 @@ export const signOutCallback = async () => {
   try {
     await signOut({ callbackUrl: "/login" });
   } catch (e) {}
+};
+
+export const revalidateTagCustom = async (tag: string) => {
+  revalidateTag(tag);
 };

@@ -14,6 +14,7 @@ import ConfirmationModal from "./../ConfirmationModal";
 import { useCreateTopicMutation } from "@/app/hooks/topics/createTopic";
 
 import { useDeleteTopicMutation } from "@/app/hooks/topics/deleteTopic";
+import { revalidateTag } from "next/cache";
 
 const TopicsPage = () => {
   const [page, setPage] = useState(1);

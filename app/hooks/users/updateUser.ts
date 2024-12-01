@@ -3,6 +3,7 @@ import { apiClient } from "../../lib/api";
 import { useRouter } from "next/navigation";
 import { getSession } from "next-auth/react";
 import { toast } from "react-toastify";
+import { revalidateTagCustom } from "@/app/lib/actions";
 
 interface UserData {
   firstName: string | null;
@@ -24,6 +25,7 @@ export const useUpdateUserMutation = () => {
   return useMutation<any, Error, { data: UserData }>(updateUser, {
     onSuccess: async (data) => {
       router.push(`/profile/${data.id}`);
+      revalidateTagCustom("TOP_USERS");
       toast.success("Account updated successfully!");
     },
     onError: (error) => {
