@@ -26,7 +26,7 @@ const fetchMyTopics = async ({ page, pageSize }: FetchTopicsParams) => {
 
 export const useMyTopics = (page: number, pageSize: number) => {
   return useQuery(
-    ["MY_TOPICS", page, pageSize],
+    ["MYTOPICS", page, pageSize],
     () => fetchMyTopics({ page, pageSize }),
     {
       onSuccess: (data) => {
@@ -35,7 +35,6 @@ export const useMyTopics = (page: number, pageSize: number) => {
       onError: (error) => {
         console.error("Error fetching topics:", error);
       },
-      enabled: true,
     }
   );
 };

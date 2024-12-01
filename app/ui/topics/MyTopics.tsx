@@ -23,25 +23,13 @@ const TopicsPage = () => {
   const [editingTopic, setEditingTopic] = useState<Topic | null>(null);
   const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
   const [topicToDelete, setTopicToDelete] = useState<number | null>(null);
-  const { mutate: createTopic, isLoading: isPosting } =
-    useCreateTopicMutation();
+  const { mutate: createTopic } = useCreateTopicMutation();
   const { mutate: deleteTopic } = useDeleteTopicMutation();
 
   const { data, error, isLoading, isFetching, refetch } = useMyTopics(
     page,
     pageSize
   );
-
-  useEffect(() => {
-    if (data?.data) {
-      setAllTopics((prevTopics) => {
-        const newTopics = data.data.filter(
-          (topic: Topic) => !prevTopics.find((t) => t.id === topic.id)
-        );
-        return [...prevTopics, ...newTopics];
-      });
-    }
-  }, [data]);
 
   const handleLoadMore = () => {
     setPage((prevPage) => prevPage + 1);
@@ -97,7 +85,7 @@ const TopicsPage = () => {
           Create New
         </button>
       </div>
-      {allTopics.map((topic: Topic) => (
+      {data?.data?.map((topic: Topic) => (
         <div key={topic.id} className="flex flex-col sm:flex-row">
           <TopicCard key={topic.id} topic={topic} />
 
@@ -120,17 +108,6 @@ const TopicsPage = () => {
         </div>
       ))}
 
-      {data?.count > page * pageSize && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={handleLoadMore}
-            disabled={isFetching}
-            className="px-6 py-2 bg-gray-800 text-white rounded-lg shadow-md hover:bg-gray-600 disabled:bg-gray-400 transition duration-200"
-          >
-            {isFetching ? "Loading more..." : "Load More"}
-          </button>
-        </div>
-      )}
       {/* Modal for creating or editing a topic */}
       <TopicModal
         isOpen={isModalOpen}

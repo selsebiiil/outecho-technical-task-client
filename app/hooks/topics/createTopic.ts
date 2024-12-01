@@ -39,7 +39,7 @@ export const useCreateTopicMutation = () => {
     createOrUpdateTopic,
     {
       onSuccess: async (data) => {
-        await queryClient.invalidateQueries(topicsKeys.getMyTopics(20, 1));
+        await queryClient.invalidateQueries(topicsKeys.getMyTopics());
         toast.success("Topic saved successfully!");
         router.refresh();
       },

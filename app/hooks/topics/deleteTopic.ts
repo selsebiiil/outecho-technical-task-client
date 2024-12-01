@@ -20,7 +20,7 @@ export const useDeleteTopicMutation = () => {
   const queryClient = useQueryClient();
   return useMutation<any, Error, { id: number }>(deleteTopic, {
     onSuccess: async (data) => {
-      await queryClient.invalidateQueries(topicsKeys.getMyTopics(20, 1));
+      await queryClient.invalidateQueries(topicsKeys.getMyTopics());
       toast.success("Topic deleted successfully!");
     },
     onError: (error) => {
