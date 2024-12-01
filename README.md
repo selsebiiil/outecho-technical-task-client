@@ -29,7 +29,7 @@ Create a .env.local file in the root directory and add the following variables:
 
 API_URL=http://localhost:3000  
 NEXTAUTH_URL=http://localhost:4000  
-AUTH_SECRET=
+AUTH_SECRET="AUTH_SECRET"
 NEXT_PUBLIC_API_URL=http://localhost:3000
 
 Generating an AUTH_SECRET
@@ -49,3 +49,7 @@ npm run dev
 # or
 yarn dev
 ```
+
+The app will be available at:
+
+http://localhost:4000
